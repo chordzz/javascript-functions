@@ -1,15 +1,73 @@
-function seed() {}
+function seed() {
+  // let argArr = [...arguments]
+  // return argArr
+  return [...arguments]
+}
 
-function same([x, y], [j, k]) {}
+function same([x, y], [j, k]) {
+  if(x === j && y === k){
+    return true;
+  }
+  return false
+}
 
 // The game state to search for `cell` is passed as the `this` value of the function.
-function contains(cell) {}
+function contains(cell) {
+  return this.some(element => element.toString() === cell.toString())
+}
 
-const printCell = (cell, state) => {};
+const printCell = (cell, state) => {
+  if(contains.call(state, cell)){
+    return '\u25A3'
+  }
+  return '\u25A2'
+};
 
-const corners = (state = []) => {};
+const corners = (state = []) => {
+  if(state.length > 1 ){
+    let max = [0,0], min = [state[0][0],state[0][1]];
+    state.forEach( element => {
+      if(element[0] > max[0]){
+        max[0] = element[0]
+      }
+      if(element[1] > max[1]){
+        max[1] = element[1]
+      }
+      if(element[0] < min[0]){
+        min[0] = element[0]
+      }
+      if(element[1] < min[1]){
+        min[1] = element[1]
+      }
+    })
+    return{
+      topRight: [max[0],max[1]],
+      bottomLeft: [min[0], min[1]]
+    }
+  }
+  return {
+    topRight: [0,0],
+    bottomLeft: [0,0]
+  }
+};
 
-const printCells = (state) => {};
+const printCells = (state) => {
+  let rectangle = corners(state)
+  let max = rectangle.topRight, min = rectangle.bottomLeft;
+  let cellsStr = "";
+
+  for(let i = max[1]; i >= min[1]; i--){
+    for(j = min[0]; j <= max[0]; j++){
+      cellsStr = cellsStr + printCell([j,i], state)
+      if(j === max[0]){
+        cellsStr = cellsStr + "\n"
+      }else {
+        cellsStr = cellsStr + " "
+      }
+    }
+  }
+  return( cellsStr)
+};
 
 const getNeighborsOf = ([x, y]) => {};
 
